@@ -1,7 +1,7 @@
 const history = [];
 
 function generarContrasena() {
-  const length = document.getElementById("length").value;
+  const length = parseInt(document.getElementById("length").value);
   const useUpper = document.getElementById("uppercase").checked;
   const useLower = document.getElementById("lowercase").checked;
   const useNumbers = document.getElementById("numbers").checked;
@@ -13,10 +13,24 @@ function generarContrasena() {
   const symbols = "@#$%&*!";
 
   let caracteres = "";
-  if (useUpper) caracteres += upper;
-  if (useLower) caracteres += lower;
-  if (useNumbers) caracteres += numbers;
-  if (useSymbols) caracteres += symbols;
+  let requisitos = [];
+
+  if (useUpper) {
+    caracteres += upper;
+    requisitos.push(() => upper[Math.floor(Math.random() * upper.length)]);
+  }
+  if (useLower) {
+    caracteres += lower;
+    requisitos.push(() => lower[Math.floor(Math.random() * lower.length)]);
+  }
+  if (useNumbers) {
+    caracteres += numbers;
+    requisitos.push(() => numbers[Math.floor(Math.random() * numbers.length)]);
+  }
+  if (useSymbols) {
+    caracteres += symbols;
+    requisitos.push(() => symbols[Math.floor(Math.random() * symbols.length)]);
+  }
 
   if (caracteres.length === 0) {
     document.getElementById("warning").textContent = "⚠️ Seleccioná al menos un tipo de carácter.";
@@ -25,16 +39,29 @@ function generarContrasena() {
     document.getElementById("warning").textContent = "";
   }
 
-  let contrasena = "";
-  for (let i = 0; i < length; i++) {
-    const index = Math.floor(Math.random() * caracteres.length);
-    contrasena += caracteres.charAt(index);
+  if (length < requisitos.length) {
+    document.getElementById("warning").textContent = `⚠️ La longitud mínima debe ser ${requisitos.length} para cumplir con los requisitos.`;
+    return;
   }
+
+  // Incluir al menos un carácter de cada tipo seleccionado
+  let contrasenaArray = requisitos.map(fn => fn());
+
+  // Rellenar el resto aleatoriamente
+  for (let i = contrasenaArray.length; i < length; i++) {
+    contrasenaArray.push(caracteres[Math.floor(Math.random() * caracteres.length)]);
+  }
+
+  // Mezclar aleatoriamente
+  contrasenaArray = contrasenaArray.sort(() => Math.random() - 0.5);
+
+  const contrasena = contrasenaArray.join("");
 
   document.getElementById("password").value = contrasena;
   evaluarFuerza(contrasena);
   agregarAHistorial(contrasena);
 }
+
 
 function copiarContrasena() {
   const pw = document.getElementById("password");
@@ -51,12 +78,28 @@ function evaluarFuerza(pw) {
   if (/[0-9]/.test(pw)) fuerza++;
   if (/[@#$%&*!]/.test(pw)) fuerza++;
 
-  let nivel = "Débil";
-  if (fuerza >= 4) nivel = "Fuerte";
-  else if (fuerza >= 3) nivel = "Media";
+  const bar = document.getElementById("strengthBar");
+  let color = "red";
+  let width = "25%";
 
-  document.getElementById("strength").textContent = "Fuerza: " + nivel;
+  if (fuerza >= 4) {
+    color = "green";
+    width = "100%";
+  } else if (fuerza === 3) {
+    color = "orange";
+    width = "66%";
+  } else if (fuerza === 2) {
+    color = "gold";
+    width = "40%";
+  } else {
+    color = "red";
+    width = "25%";
+  }
+
+  bar.style.backgroundColor = color;
+  bar.style.width = width;
 }
+
 
 function agregarAHistorial(pw) {
   history.push(pw);
