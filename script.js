@@ -44,24 +44,19 @@ function generarContrasena() {
     return;
   }
 
-  // Incluir al menos un carácter de cada tipo seleccionado
   let contrasenaArray = requisitos.map(fn => fn());
 
-  // Rellenar el resto aleatoriamente
   for (let i = contrasenaArray.length; i < length; i++) {
     contrasenaArray.push(caracteres[Math.floor(Math.random() * caracteres.length)]);
   }
 
-  // Mezclar aleatoriamente
   contrasenaArray = contrasenaArray.sort(() => Math.random() - 0.5);
-
   const contrasena = contrasenaArray.join("");
 
   document.getElementById("password").value = contrasena;
   evaluarFuerza(contrasena);
   agregarAHistorial(contrasena);
 }
-
 
 function copiarContrasena() {
   const pw = document.getElementById("password");
@@ -99,7 +94,6 @@ function evaluarFuerza(pw) {
   bar.style.backgroundColor = color;
   bar.style.width = width;
 }
-
 
 function agregarAHistorial(pw) {
   history.push(pw);
