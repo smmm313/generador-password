@@ -21,7 +21,7 @@ Este es un proyecto simple en HTML, CSS y JavaScript que genera contraseñas seg
 Si activás GitHub Pages en la pestaña **Settings > Pages**, podés ver el generador funcionando en:
 
 ```
-https://TU_USUARIO.github.io/generador-de-contraseña/
+https://smmm313.github.io/generador-de-contraseña/
 ```
 
 _Reemplazá `TU_USUARIO` por tu nombre de usuario de GitHub._
