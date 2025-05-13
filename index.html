@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generador de Contraseñas</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Generador de Contraseñas</h2>
+
+    <label for="length">Longitud: <span id="lengthValue">12</span></label>
+    <input type="range" id="length" min="6" max="24" value="12">
+
+    <div class="options">
+      <label><input type="checkbox" id="uppercase" checked> Mayúsculas</label><br>
+      <label><input type="checkbox" id="lowercase" checked> Minúsculas</label><br>
+      <label><input type="checkbox" id="numbers" checked> Números</label><br>
+      <label><input type="checkbox" id="symbols" checked> Símbolos</label>
+      <div class="warning" id="warning"></div>
+    </div>
+
+    <input type="text" id="password" readonly>
+    <br>
+    <button onclick="generarContrasena()">Generar</button>
+    <button onclick="copiarContrasena()">Copiar</button>
+    <button onclick="descargarContrasena()">Descargar .txt</button>
+
+    <p id="strength">Fuerza: -</p>
+
+    <div id="historyTitle"><strong>Historial:</strong></div>
+    <div id="history"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
